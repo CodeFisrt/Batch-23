@@ -1,0 +1,102 @@
+<div class="row">
+    <div class="col-12 ">
+        <div class="card  mt-5 mx-5" id="tblDepartment">
+            <div class="card-header">
+                <h5><strong>Department Information </strong>
+                    <button type="button " class="btn btn-outline-light float-end" (click)="showModel()"
+                        (click)="saveButton()"><i class="fa fa-plus"></i>
+                        <strong> Add new</strong></button>
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-srtipped table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Department Name</th>
+                            <th>Department Head Name</th>
+                            <th>createdDate</th>                                     
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @for(dept of deptList;track dept.deptId;let index= $index){
+                        <tr>
+                            <td>{{index+1}}</td>
+                            <td>{{dept.deptName}}</td>
+                            <td>{{dept.deptHeadName}}</td>
+                            <td>{{dept.createdDate |date: 'dd-MM-yy'}}</td>                                                        
+                            <td>
+                                <button class="btn btn-info" (click)="showModel()" (click)="updateButton()"
+                                    (click)="editDepartment(dept.deptId)"><i class="fa-solid fa-pen-to-square"></i></button>&nbsp;
+                                <button class="btn btn-danger" (click)="deleteDepartment(dept.deptId)"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="DepartmentForm">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #d943e7;;">
+                <h4 class="modal-title text-white">Add Department</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModel()"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Department Name :</label>
+                            <input type="text" placeholder="Enter Department Name" class="form-control" name="name" #name="ngModel"
+                                required [(ngModel)]="deptObj.deptName">
+                            <div class="text-danger" *ngIf="name.touched || name.dirty">
+                                <span *ngIf="name.errors?.['required']">Department Name is required</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label>Created Date:</label>
+                            <input type="date" placeholder="Enter Created Date" class="form-control" name="date" #date="ngModel"
+                                required [(ngModel)]="deptObj.createdDate">
+                            <div class="text-danger" *ngIf="date.touched || date.dirty">
+                                <span *ngIf="date.errors?.['required']">Created Date is required</span>
+                            </div>
+                        </div>  
+                        <div class="col-4">
+                            <label>Department Head Name:</label>
+                            <select class="form-select" [(ngModel)]="deptObj.deptHeadEmpId">
+                                <option value="0" selected>Select Department Head</option>
+                                <option *ngFor="let emp of empList" [value]="emp.employeeId">
+                                    {{emp.employeeName}}</option>
+                            </select>
+                        </div>                     
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="col-3 " *ngIf="visibleSaveButton">
+                    <button class="btn btn-success" (click)="createDepartment()"><i
+                            class="fa fa-save"></i> Save</button>
+                </div>
+                <div class="col-3" *ngIf="visibleUpdateButton">
+                    <button class="btn btn-warning" (click)="updateDepartment()"><i
+                            class="fa-solid fa-pen"></i> Update</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-danger" (click)="closeModel()"><i class="fa fa-close"></i>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

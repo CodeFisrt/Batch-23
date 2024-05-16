@@ -1,0 +1,138 @@
+<div class="row">
+    <div class="col-12 ">
+        <div class="card  mt-5 mx-5" id="tblEmployee">
+            <div class="card-header">
+                <h5><strong>Employee Information </strong>
+                    <button type="button " class="btn btn-outline-light float-end" (click)="showModel()"
+                        (click)="saveButton()"><i class="fa fa-plus"></i>
+                        <strong> Add new</strong></button>
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-srtipped table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Employee Id</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>contact No</th>
+                            <th>Email-Id</th>                                                   
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(emp of empList;track emp.employeeId;let index= $index){
+                        <tr>
+                            <td>{{index+1}}</td>
+                            <td>{{emp.employeeId}}</td>
+                            <td>{{emp.employeeName}}</td>
+                            <td>{{emp.deptName}}</td>
+                            <td>{{emp.contactNo}}</td>
+                            <td>{{emp.emailId}}</td>                                                   
+                            <td>{{emp.role}}</td>
+                            <td>
+                                <button class="btn btn-info" (click)="showModel()" (click)="updateButton()"
+                                    (click)="editEmployee(emp.employeeId)"><i class="fa-solid fa-pen-to-square"></i></button>&nbsp;
+                                <button class="btn btn-danger" (click)="deleteEmployee(emp.employeeId)"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="employeeForm">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #d943e7;;">
+                <h4 class="modal-title text-white">Add Employee</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModel()"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Employee Name :</label>
+                            <input type="text" placeholder="Enter Employee Name" class="form-control" name="name" #name="ngModel"
+                                required [(ngModel)]="empObj.employeeName">
+                            <div class="text-danger" *ngIf="name.touched || name.dirty">
+                                <span *ngIf="name.errors?.['required']">Employee Name is required</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label>Contact No :</label>
+                            <input type="text" placeholder="Enter Contact No" class="form-control" name="contact" #contact="ngModel"
+                                required [(ngModel)]="empObj.contactNo">
+                            <div class="text-danger" *ngIf="contact.touched || contact.dirty">
+                                <span *ngIf="contact.errors?.['required']">Contact No is required</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label>Email :</label>
+                            <input type="text" placeholder="Enter Email" class="form-control" name="email"
+                                #email="ngModel" required [(ngModel)]="empObj.emailId">
+                            <div class="text-danger" *ngIf="email.touched || email.dirty">
+                                <span *ngIf="email.errors?.['required']">Email is required</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label>Password :</label>
+                            <input type="password" placeholder="Enter Password" class="form-control" name="password"
+                                #password="ngModel" [(ngModel)]="empObj.password" required minlength="6">
+                            <div class="text-danger" *ngIf="password.touched || password.dirty">
+                                <span *ngIf="password.errors?.['required']">Password is required</span>
+                                <span *ngIf="password.errors?.['minlength']">Password Must be 6 Characters</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label>Department :</label>
+                            <select class="form-select" [(ngModel)]="empObj.deptId">
+                                <option value="0" selected>Select Department</option>
+                                <option *ngFor="let dept of deptList" [value]="dept.deptId">
+                                    {{dept.deptName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label>Role :</label>
+                            <select class="form-select" [(ngModel)]="empObj.role">
+                                <option value="0" selected>Select Role</option>
+                                <option *ngFor="let role of roleList" [value]="role">
+                                    {{role}}</option>
+                            </select>                          
+                        </div>                       
+                        <div class="col-4">
+                            <label>Gender:</label>
+                            <div>
+                                <input type="radio" id="male" name="gender" value="male" [(ngModel)]="empObj.gender">
+                                <label for="male">Male</label>&nbsp;                           
+                                <input type="radio" id="female" name="gender" value="female" [(ngModel)]="empObj.gender">
+                                <label for="female">Female</label>
+                            </div>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="col-3 " *ngIf="visibleSaveButton">
+                    <button class="btn btn-success" (click)="createEmployee()"><i
+                            class="fa fa-save"></i> Save</button>
+                </div>
+                <div class="col-3" *ngIf="visibleUpdateButton">
+                    <button class="btn btn-warning" (click)="updateEmployee()"><i
+                            class="fa-solid fa-pen"></i> Update</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-danger" (click)="closeModel()"><i class="fa fa-close"></i>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
